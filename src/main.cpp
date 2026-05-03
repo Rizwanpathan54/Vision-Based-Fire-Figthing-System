@@ -1,22 +1,22 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-/* ---------- SERVOS ---------- */
+/*SERVOS */
 Servo panServo;
 Servo tiltServo;
 
-/* ---------- PIN DEFINITIONS ---------- */
+/*PIN DEFINITIONS */
 #define PAN_PIN   18
 #define TILT_PIN  19
 #define RELAY_PIN 25   // Pump relay (ACTIVE LOW)
 
-/* ---------- MG90S SAFE LIMITS ---------- */
+/*MG90S SAFE LIMITS */
 #define PAN_MIN   0
 #define PAN_MAX   120
 #define TILT_MIN  0
 #define TILT_MAX  150
 
-/* ---------- SERVO CENTERS ---------- */
+/*SERVO CENTERS */
 #define PAN_CENTER   65
 #define TILT_CENTER  90
 
@@ -36,7 +36,7 @@ Servo tiltServo;
    prevent micro-jitter from driving the servos constantly. ---------- */
 #define DEADBAND_DEG 0.8f
 
-/* ---------- STATE ---------- */
+/*STATE */
 String  rxBuffer   = "";
 float   smoothPan  = PAN_CENTER;    // tracks actual written servo position
 float   smoothTilt = TILT_CENTER;
@@ -61,7 +61,7 @@ void setup() {
     tiltServo.write((int)smoothTilt);
 }
 
-/* ---------- LOOP ---------- */
+/* LOOP */
 void loop() {
     while (Serial.available()) {
         char c = Serial.read();
@@ -77,10 +77,10 @@ void loop() {
     }
 }
 
-/* ---------- PARSE COMMANDS ---------- */
+/* PARSE COMMANDS */
 void parseSerial(String data) {
 
-    // --- Pump control (works in both merged and legacy FIRE:0 packet) ---
+    // --- Pump control
     if (data.indexOf("FIRE:1") != -1) {
         digitalWrite(RELAY_PIN, LOW);   // Pump ON
     } else if (data.indexOf("FIRE:0") != -1) {
